@@ -59,12 +59,12 @@ public class PlayerMovementController : MonoBehaviour
         if (movementDirection < 0)
         {
             transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(Quaternion.Euler(0f, 0f, 0f), Quaternion.Euler(0f, 180f, 0f), playerRotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(Quaternion.Euler(0f, 0f, 0f), Quaternion.Euler(0f, 180f, 0f), playerRotationSpeed);
         }
         else if (movementDirection > 0)
         {
             transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(Quaternion.Euler(0f, 180f, 0f), Quaternion.Euler(0f, 0f, 0f), playerRotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(Quaternion.Euler(0f, 180f, 0f), Quaternion.Euler(0f, 0f, 0f), playerRotationSpeed);
         }
     }
     public void playerJumpInputBinding(InputAction.CallbackContext inputContext)
