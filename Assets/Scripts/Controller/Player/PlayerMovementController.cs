@@ -23,6 +23,7 @@ public class PlayerMovementController : MonoBehaviour
     public Transform goundCheckPosition;
     public LayerMask groundMask;
     public Rigidbody rigidbodyPlayer;
+    public bool manualGravityIsOn = false;
 
     void OnEnable()
     {
@@ -44,7 +45,7 @@ public class PlayerMovementController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!isGrounded())
+        if (!isGrounded() && manualGravityIsOn)
             gravityDirection(Physics.gravity);
 
         playerMovement();
