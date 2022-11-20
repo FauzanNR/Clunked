@@ -24,6 +24,10 @@ public class PlayerMovementController : MonoBehaviour
     public LayerMask groundMask;
     public Rigidbody rigidbodyPlayer;
 
+    public event System.Action OnMoving;
+    public event System.Action OnIdle;
+    public event System.Action OnJump;
+
     void OnEnable()
     {
         playerInput = new PlayerInput();
@@ -44,6 +48,7 @@ public class PlayerMovementController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        
         if (!isGrounded())
             gravityDirection(Physics.gravity);
 
@@ -54,17 +59,25 @@ public class PlayerMovementController : MonoBehaviour
     {
 
         movementDirection = playerInput.MovementController.Move.ReadValue<Vector2>().x;
-        print("performed " + movementDirection);
+        //print("performed " + movementDirection);
 
         if (movementDirection < 0)
         {
             transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Slerp(Quaternion.Euler(0f, 0f, 0f), Quaternion.Euler(0f, 180f, 0f), playerRotationSpeed);
+        
+            if(isGrounded()) OnMoving?.Invoke();
         }
         else if (movementDirection > 0)
         {
             transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Slerp(Quaternion.Euler(0f, 180f, 0f), Quaternion.Euler(0f, 0f, 0f), playerRotationSpeed);
+
+            if (isGrounded()) OnMoving?.Invoke();
+        }
+        else
+        {
+            if (isGrounded()) OnIdle?.Invoke();
         }
     }
     public void playerJumpInputBinding(InputAction.CallbackContext inputContext)
@@ -73,6 +86,7 @@ public class PlayerMovementController : MonoBehaviour
         if (inputContext.performed && isGrounded())
         {
             rigidbodyPlayer.velocity = new Vector3(0f, jumpForce, movementDirection * movementSpeed * Time.deltaTime);
+            //OnJump?.Invoke();
         }
         if (inputContext.canceled && isGrounded())
         {
