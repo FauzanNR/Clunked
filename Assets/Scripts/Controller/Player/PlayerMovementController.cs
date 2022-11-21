@@ -32,6 +32,10 @@ public class PlayerMovementController : MonoBehaviour
 
     public GameObject gunDirVisu;
 
+    public event System.Action OnMoving;
+    public event System.Action OnIdle;
+    public event System.Action OnJump;
+
     void OnEnable()
     {
         playerInput = new PlayerInput();
@@ -73,10 +77,16 @@ public class PlayerMovementController : MonoBehaviour
         if (movementDirectionX < 0)
         {
             charBody.rotation = Quaternion.Slerp(Quaternion.Euler(0f, 0f, 0f), Quaternion.Euler(0f, 180f, 0f), playerRotationSpeed);
+            if (isGrounded()) OnMoving?.Invoke();
         }
         else if (movementDirectionX > 0)
         {
             charBody.rotation = Quaternion.Slerp(Quaternion.Euler(0f, 180f, 0f), Quaternion.Euler(0f, 0f, 0f), playerRotationSpeed);
+            if (isGrounded()) OnMoving?.Invoke();
+        }
+        else
+        {
+            if (isGrounded()) OnIdle?.Invoke();
         }
     }
 
@@ -86,6 +96,7 @@ public class PlayerMovementController : MonoBehaviour
         if (inputContext.performed && isGrounded())
         {
             rigidbodyPlayer.velocity = new Vector3(0f, jumpForce, movementDirectionX * movementSpeed * Time.deltaTime);
+            OnJump?.Invoke();
         }
         if (inputContext.canceled && isGrounded())
         {
@@ -94,7 +105,7 @@ public class PlayerMovementController : MonoBehaviour
     }
     private bool isGrounded()
     {
-        return Physics.CheckSphere(goundCheckPosition.position, 0.2f, groundMask);
+        return Physics.CheckSphere(goundCheckPosition.position, 0.15f, groundMask);
     }
 
     private void gravityDirection(Vector3 direction)
