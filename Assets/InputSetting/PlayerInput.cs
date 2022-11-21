@@ -52,7 +52,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -124,9 +124,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""691896e1-2e5b-495c-9090-65286bdf7adf"",
-                    ""path"": ""<Keyboard>/p"",
-                    ""interactions"": """",
+                    ""id"": ""c9f7fa11-8388-4d7b-acbd-f8b08179e05c"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Fire"",
