@@ -17,12 +17,13 @@ public class RangeEnemy : MonoBehaviour
     public bool isCanPassThru = false;
     public GameObject onHitDamagedPrefab;
     public Color damagedTintedColor;
-    public ParticleSystem vfx;
+    public GameObject vfx;
     public LayerMask playerMask;
     private NavMeshAgent agent;
     private float nextFire;
     private bool inRange = false;
-
+    private Animator animator;
+    private int isShotHash;
     private void Awake()
     {
         if (agent == null)
@@ -31,6 +32,8 @@ public class RangeEnemy : MonoBehaviour
         }
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        animator = transform.GetChild(1).GetComponent<Animator>();
+        isShotHash = Animator.StringToHash("isShot");
 
     }
     private void Start()
@@ -46,6 +49,7 @@ public class RangeEnemy : MonoBehaviour
         {
             Attack();
         }
+
     }
     private void Patrolling()
     {
@@ -56,16 +60,22 @@ public class RangeEnemy : MonoBehaviour
         else
         {
             inRange = false;
+
         }
     }
     private void Attack()
     {
+        bool isShot = animator.GetBool(isShotHash);
+        animator.SetBool("isShot", true);
 
         nextFire = Time.time + fireRate;
         GameObject instantiatedGameObject = Instantiate(projectilePrefab, projectileSpawn.position, Quaternion.identity);
         instantiatedGameObject.GetComponent<ProjectileController>().InitShooter(gameObject);
         instantiatedGameObject.GetComponent<ProjectileController>().penetrateable = isCanPassThru;
         instantiatedGameObject.GetComponent<ProjectileController>().force = projectileSpeed;
+        instantiatedGameObject.GetComponent<ProjectileController>().damage = damage;
+
+
 
     }
     private void LookAtPlayer()

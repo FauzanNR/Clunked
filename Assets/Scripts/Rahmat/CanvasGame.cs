@@ -11,13 +11,13 @@ public class CanvasGame : MonoBehaviour
     public Button resumeButton;
     public Button backToMenuButton;
     public TextMeshProUGUI healthUI;
-    // public PlayerController player;
+    public DummyPlayerScript player;
     private void Awake()
     {
         pauseButton.onClick.AddListener(() => PauseButton());
         backToMenuButton.onClick.AddListener(() => BackToMenuButton());
         resumeButton.onClick.AddListener(() => Resume());
-        // player = FindObjectOfType<PlayerController>();
+        player = FindObjectOfType<DummyPlayerScript>();
     }
     private void Start()
     {
@@ -25,7 +25,7 @@ public class CanvasGame : MonoBehaviour
     }
     private void Update()
     {
-        // healthUI.text = player.health;
+        healthUI.text = player.health.ToString();
     }
 
     private void PauseButton()
