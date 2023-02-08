@@ -13,14 +13,19 @@ public class DummyPlayerScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Projectile")
         {
-            health -= other.GetComponent<ProjectileController>().damage;
-            Destroy(other);
-            if (!other.GetComponent<ProjectileController>().isMelee)
+            var damageObject = other.GetComponent<ProjectileController>();
+            if (damageObject != null)
             {
-                GameObject damagedFX = Instantiate(particle, transform.position, Quaternion.identity);
-                Destroy(damagedFX, damagedDuration);
+                health -= damageObject.damage;
+                Destroy(other);
+                if (!other.GetComponent<ProjectileController>().isMelee)
+                {
+                    GameObject damagedFX = Instantiate(particle, transform.position, Quaternion.identity);
+                    Destroy(damagedFX, damagedDuration);
 
+                }
             }
+
         }
     }
 }
